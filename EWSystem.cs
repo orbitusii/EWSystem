@@ -21,10 +21,13 @@ namespace EWSystem
 
                 List<EWReceiver> RXers = Receivers.FindAll(x => x.Antenna.Frequency == freq);
 
-                EvaluateReceiversAsync(RXers, TXers);
+                EvaluateReceivers(RXers, TXers);
             }
         }
 
+        /// <summary>
+        /// NONFUNCTIONAL: Unity is really fussy about stupid thread safety, how rude.
+        /// </summary>
         public static async void SimulateAsync ()
         {
             List<string> freqs = AssembleFreqList();
@@ -60,6 +63,14 @@ namespace EWSystem
             return freqs;
         }
 
+        private static void EvaluateReceivers (List<EWReceiver> RXers, List<EWTransmitter> TXers)
+        {
+            foreach(var RXer in RXers)
+            {
+                RXer.Listen(TXers);
+            }
+        }
+
         private static async void EvaluateReceiversAsync (List<EWReceiver> RXers, List<EWTransmitter> TXers)
         {
             List<Task> tasks = new List<Task>();
@@ -93,6 +104,12 @@ namespace EWSystem
         public static void RemoveItem(EWReceiver rxer)
         {
             Receivers.Remove(rxer);
+        }
+
+        public static void ResetLists ()
+        {
+            Receivers.Clear();
+            Transmitters.Clear();
         }
     }
 }

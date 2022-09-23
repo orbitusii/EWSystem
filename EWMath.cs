@@ -8,9 +8,9 @@ namespace EWSystem
 {
     public static class EWMath
     {
-        public static float InverseSquare (Vector64 pos1, Vector64 pos2, float Power)
+        public static float InverseSquare (Vector64 from, Vector64 to, float Power)
         {
-            double sqrMag = (pos2 - pos1).SquareMagnitude;
+            double sqrMag = (to - from).SquareMagnitude;
             return Power / (float)sqrMag;
         }
     }
